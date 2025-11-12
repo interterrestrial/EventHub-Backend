@@ -4,7 +4,11 @@ const app = express();
 
 const port = process.env.PORT || 3000;
 
-console.log(`Port: ${port}`);
+app.get("/", (req, res) => {
+    res.json({
+        message: "Server is working"
+    });
+});
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
