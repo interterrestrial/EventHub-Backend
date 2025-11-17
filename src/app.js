@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes.js";
+import "dotenv/config";
 
 const app = express();
 
@@ -10,15 +11,10 @@ const allowedOrigins = [
   process.env.CORS_ORIGIN_PROD || "https://event-hub-frontend-six.vercel.app/" 
 ];
 
-app.use(cors({
-  origin: (origin, cb) => {
-    if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
-    return cb(new Error("Not allowed by CORS"));
-  },
-  credentials: true // Allow cookies and credentials
-}));
 
 app.use(express.json());
+
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.json({ message: "Server is working" });
@@ -26,4 +22,6 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 
-export default app;
+app.listen(8080,()=>{
+  console.log("Server started on port 8080");
+})

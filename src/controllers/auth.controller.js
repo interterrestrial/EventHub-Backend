@@ -4,6 +4,7 @@ import { signToken } from "../utils/jwt.js";
 
 export const register = async (req, res) => {
   try {
+    // return res.send("asd")
     const { name, email, password, role = "student" } = req.body;
 
     if (!name || !email || !password) {
