@@ -4,17 +4,18 @@ import authRoutes from "./routes/auth.routes.js";
 
 const app = express();
 
-const allowed = [
-  process.env.CORS_ORIGIN_LOCAL,
-  process.env.CORS_ORIGIN_PROD
-].filter(Boolean);
+// Define allowed origins for CORS
+const allowedOrigins = [
+  process.env.CORS_ORIGIN_LOCAL || "http://localhost:3000", 
+  process.env.CORS_ORIGIN_PROD || "https://event-hub-frontend-six.vercel.app/" 
+];
 
 app.use(cors({
   origin: (origin, cb) => {
-    if (!origin || allowed.includes(origin)) return cb(null, true);
+    if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
     return cb(new Error("Not allowed by CORS"));
   },
-  credentials: true
+  credentials: true // Allow cookies and credentials
 }));
 
 app.use(express.json());

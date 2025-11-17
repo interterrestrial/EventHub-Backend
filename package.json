@@ -9,7 +9,7 @@
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
     "build": "npm install && npx prisma generate",
-    "format": "prettier --write .", 
+    "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prisma:gen": "prisma generate",
     "prisma:push": "prisma db push"
@@ -25,6 +25,7 @@
     "dotenv": "^16.3.1",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "mongodb": "^7.0.0",
     "prettier": "^3.6.2",
     "prisma": "^6.19.0"
   },
