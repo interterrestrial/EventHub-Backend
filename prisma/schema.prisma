@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  name              String
+  email             String   @unique
+  password          String
+  role              String   @default("student") // student, organizer, admin
+  phone             String?
+  college           String?
+  department        String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  eventsCreated     Event[]  @relation("EventOrganizer")
+  registrations     Registration[]
+}
+
+model Event {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  title             String
+  description       String
+  category          String   // cultural, technical, workshops, seminars, sports
+  venue             String
+  date              DateTime
+  time              String
+  registrationDeadline DateTime
+  maxAttendees      Int?
+  imageUrl          String?
+  status            String   @default("upcoming") // upcoming, ongoing, completed, cancelled
+  organizerId       String   @db.ObjectId
+  organizer         User     @relation("EventOrganizer", fields: [organizerId], references: [id], onDelete: Cascade)
+  registrationStatus String  @default("open") // open, closed
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  registrations     Registration[]
+}
+
+model Registration {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String   @db.ObjectId
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  eventId           String   @db.ObjectId
+  event             Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  registeredAt      DateTime @default(now())
+  
+  @@unique([userId, eventId])
+}
