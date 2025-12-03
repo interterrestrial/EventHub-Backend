@@ -12,7 +12,7 @@ model User {
   name              String
   email             String   @unique
   password          String
-  role              String   @default("student") // student, organizer, admin
+  role              String   @default("student") // student, organizer
   phone             String?
   college           String?
   department        String?
@@ -27,7 +27,7 @@ model Event {
   id                String   @id @default(auto()) @map("_id") @db.ObjectId
   title             String
   description       String
-  category          String   // cultural, technical, workshops, seminars, sports
+  category          String   // cultural, technical, workshops, seminars
   venue             String
   date              DateTime
   time              String
